@@ -93,7 +93,7 @@ def getCurrentBlockIndex():
 
 def createBlock(index, data, timestamp, previousHash):
     nonce=calculateNonce(index, data, timestamp, previousHash)
-    block=index+"\n"+data+"\n"+timestamp+previousHash+"\n"+str(nonce)
+    block=index+"\n"+data+"\n"+timestamp+"\n"+previousHash+"\n"+str(nonce)
     currentHash=hashlib.sha256(block.encode())
     f = open("./" + directoryName + "/" + str(index), "a+")
     f.write(block)
@@ -120,7 +120,7 @@ def main():
     boolean = True
     while boolean == True:
         try:
-            previousHash = getLastHash()
+            previousHash = getLastHash().rstrip('\n')
             currentBlockIndex = getCurrentBlockIndex()
 
             f = open(transactionFile, "r")
@@ -134,7 +134,7 @@ def main():
             sender = trans[0]
             receiver = trans[1]
             amount = trans[2]
-            timestamp = trans[3]
+            timestamp = trans[3].rstrip('\n')
             data="{"+sender+", "+receiver+", "+amount+"}"
             createBlock(str(currentBlockIndex), data, timestamp, previousHash)
             boolean=True
